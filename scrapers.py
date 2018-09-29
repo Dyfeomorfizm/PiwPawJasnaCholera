@@ -2,9 +2,9 @@ import requests
 import lxml.etree
 
 
-class PiwPawScraper(object):
+class BaseScraper(object):
     website = ''
-    xpath = '//h4[contains(@class, "cml_shadow")]/span/text()'
+    xpath = ''
 
     def __init__(self):
         self.parser = lxml.etree.HTMLParser()
@@ -21,9 +21,15 @@ class PiwPawScraper(object):
 
     def run(self):
         response = self.get_response()
-        html_tree = self.get_html_tree(response)
+        self.html_tree = self.get_html_tree(response)
 
-        self.beers = self._get_list_of_beers(html_tree)
+
+class PiwPawScraper(BaseScraper):
+    xpath = '//h4[contains(@class, "cml_shadow")]/span/text()'
+
+    def run(self):
+        super(PiwPawScraper, self).run()
+        self.beers = self._get_list_of_beers(self.html_tree)
 
 
 class ParkingowaScraper(PiwPawScraper):
@@ -32,3 +38,24 @@ class ParkingowaScraper(PiwPawScraper):
 
 class FoksalScraper(PiwPawScraper):
     website = 'http://piw-paw-foksal.ontap.pl/'
+
+
+class JasnaCholeraScraper(BaseScraper):
+    website = 'http://ontap.pl/beer?mode=view&&beer_id=455'
+    xpath = '//*[@id="pubs"]/div/div[@class=" col-xs-6"]/a/text()'
+
+    def run(self):
+        super(JasnaCholeraScraper, self).run()
+        results = self._get_list_of_bars(self.html_tree)
+
+    def _get_list_of_bars(self, html_tree):
+        return html_tree.xpath(self.xpath)
+
+    def save(self):
+        # TODO: SQLite
+        pass
+
+
+if __name__ == '__main__':
+    f = JasnaCholeraScraper()
+    f.run()
