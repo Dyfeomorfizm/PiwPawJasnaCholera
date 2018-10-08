@@ -28,7 +28,7 @@ class PiwPawScraper(BaseScraper):
     xpath = '//h4[contains(@class, "cml_shadow")]/span/text()'
 
     def run(self):
-        super(PiwPawScraper, self).run()
+        super().run()
         self.beers = self._get_list_of_beers(self.html_tree)
 
 
@@ -45,8 +45,9 @@ class JasnaCholeraScraper(BaseScraper):
     xpath = '//*[@id="pubs"]/div/div[@class=" col-xs-6"]/a/text()'
 
     def run(self):
-        super(JasnaCholeraScraper, self).run()
+        super().run()
         results = self._get_list_of_bars(self.html_tree)
+        return results
 
     def _get_list_of_bars(self, html_tree):
         return html_tree.xpath(self.xpath)
