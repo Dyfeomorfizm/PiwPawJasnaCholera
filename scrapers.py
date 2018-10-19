@@ -1,6 +1,6 @@
-import requests
 import lxml.etree
-
+import requests
+import re
 
 class BaseScraper(object):
     website = ''
@@ -16,9 +16,6 @@ class BaseScraper(object):
         response_bytes = bytes(bytearray(response.text, encoding='utf-8'))
         return lxml.etree.HTML(response_bytes, self.parser)
 
-    def _get_list_of_beers(self, html_tree):
-        return html_tree.xpath(self.xpath)
-
     def run(self):
         response = self.get_response()
         self.html_tree = self.get_html_tree(response)
@@ -27,9 +24,16 @@ class BaseScraper(object):
 class PiwPawScraper(BaseScraper):
     xpath = '//h4[contains(@class, "cml_shadow")]/span/text()'
 
+    def _get_list_of_beers(self, html_tree):
+        for i in html_tree.xpath(self.xpath):
+            i = re.sub('\s+', ' ', i.strip())
+
+            if i and '%' not in i:
+                yield i
+
     def run(self):
         super().run()
-        self.beers = self._get_list_of_beers(self.html_tree)
+        self.beers = set(self._get_list_of_beers(self.html_tree))
 
 
 class ParkingowaScraper(PiwPawScraper):
