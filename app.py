@@ -23,7 +23,7 @@ def check_where_is(bars):
 
 
 def create_msg(d):
-    msg = "Dzisiaj na Paringowej {}, na Foksal {}.".format(*d.values())
+    msg = "Dzisiaj na Parkingowej {}, na Foksal {}.".format(*d.values())
     return msg
 
 
@@ -31,7 +31,8 @@ def run_app():
     bars = run_scraper()
     d = check_where_is(bars)
     msg = create_msg(d)
-    fb.publish(msg)
+    # fb.publish(msg)
+    return msg
 
 
 if __name__ == '__main__':
