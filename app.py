@@ -54,7 +54,6 @@ def run_ania():
     for n, ws in zip(names, websites):
         bars = sum([get_bars(w) for w in ws], [])
         msg += mk_msg(n, bars)
-        msg += "\n"
     msg = msg[:-1] + "."
     return msg
 
