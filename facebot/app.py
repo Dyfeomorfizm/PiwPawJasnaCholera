@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-import facebot.facebot.spiders.scrapers as scrapers
+import facebot.spiders.scrapers as scrapers
 
 
 def run_scraper():

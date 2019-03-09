@@ -2,7 +2,6 @@ from scrapy.http import FormRequest
 import scrapy
 import app
 
-
 class FacebookSpider(scrapy.Spider):
     name = "fb_text"
 

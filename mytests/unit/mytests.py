@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch, MagicMock
 
-from app import check_where_is, create_msg
+from facebot.app import check_where_is, create_msg
 from facebot.facebot.spiders.scrapers import JasnaCholeraScraper
 
 
